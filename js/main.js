@@ -19,22 +19,36 @@ function renderGames() {
   }).join("");
 }
 
-function renderLeaderboard() {
+async function renderLeaderboard() {
   const el = document.getElementById("global-leaderboard");
+  const note = document.querySelector(".lb-note");
   if (!el || !window.Leaderboard) return;
 
-  const top = Leaderboard.getTop10("focus-lock");
-  if (!top.length) {
-    el.innerHTML = `<li class="empty">No scores yet. Be the first.</li>`;
-    return;
-  }
+  el.innerHTML = `<li class="empty">Loading…</li>`;
 
-  el.innerHTML = top.map(entry => `
-    <li>
-      <span class="name">${escapeHtml(entry.name)}</span>
-      <span class="score">${entry.score.toLocaleString()}</span>
-    </li>
-  `).join("");
+  try {
+    const top = await Leaderboard.getTop10("focus-lock");
+
+    if (!top.length) {
+      el.innerHTML = `<li class="empty">No scores yet. Be the first.</li>`;
+    } else {
+      el.innerHTML = top.map(entry => `
+        <li>
+          <span class="name">${escapeHtml(entry.name)}</span>
+          <span class="score">${entry.score.toLocaleString()}</span>
+        </li>
+      `).join("");
+    }
+
+    if (note) {
+      note.textContent = Leaderboard.isRemote()
+        ? "Global scores powered by Supabase."
+        : "Scores stored in this browser only. Add Supabase keys in js/config.js for a real global leaderboard.";
+    }
+  } catch (err) {
+    console.error(err);
+    el.innerHTML = `<li class="empty">Failed to load leaderboard</li>`;
+  }
 }
 
 function escapeHtml(str) {
