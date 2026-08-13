@@ -124,7 +124,7 @@ body {
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 1.25rem;
 }
 
@@ -137,6 +137,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .game-card:hover {
@@ -290,5 +291,24 @@ footer a:hover {
 @media (max-width: 600px) {
   .logo {
     font-size: 1.6rem;
+  }
+
+  .games-section,
+  .leaderboard-section,
+  .intro {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-card {
+    padding: 1.15rem;
+  }
+
+  .play-btn {
+    width: 100%;
   }
 }
