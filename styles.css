@@ -80,6 +80,19 @@ body {
   text-transform: uppercase;
 }
 
+.version {
+  margin-top: 0.45rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  opacity: 0.7;
+  letter-spacing: 0.08em;
+}
+
+footer .version {
+  margin-top: 0;
+  opacity: 0.85;
+}
+
 .intro {
   max-width: 720px;
   margin: 0 auto 3rem;
