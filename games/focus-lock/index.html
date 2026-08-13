@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Focus Lock — AI Will Lose This Game</title>
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="game.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="game-page">
+  <div class="bg-grid"></div>
+
+  <header class="game-header">
+    <a href="../../" class="back-link">← All Games</a>
+    <h1 class="game-title">Focus Lock</h1>
+    <div class="hud">
+      <div class="hud-item">Score <span id="score">0</span></div>
+      <div class="hud-item">Combo <span id="combo">0</span></div>
+      <div class="hud-item">Level <span id="level">1</span></div>
+    </div>
+  </header>
+
+  <div class="game-container">
+    <canvas id="game-canvas"></canvas>
+
+    <div id="overlay" class="overlay">
+      <div class="overlay-content">
+        <h2 id="overlay-title">Focus Lock</h2>
+        <p id="overlay-desc">
+          Multiple targets move across the field.<br>
+          One of them is the <strong>true target</strong> (briefly highlighted).<br>
+          Click it before the timer runs out.<br><br>
+          Speed and clutter increase with every successful lock.
+        </p>
+        <button id="start-btn" class="play-btn large">Start Game</button>
+        <div id="final-score-block" class="final-score-block hidden">
+          <div class="final-score">Score: <span id="final-score">0</span></div>
+          <input type="text" id="player-name" placeholder="Your name (optional)" maxlength="20" />
+          <button id="submit-score-btn" class="play-btn">Submit Score</button>
+          <button id="retry-btn" class="play-btn secondary">Play Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="side-leaderboard">
+    <h3>Top 10</h3>
+    <ol id="game-leaderboard" class="leaderboard-list">
+      <li class="empty">No scores yet</li>
+    </ol>
+  </section>
+
+  <script src="../../js/leaderboard.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
