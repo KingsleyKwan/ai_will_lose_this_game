@@ -80,7 +80,7 @@
     trueIndex = Math.floor(Math.random() * targets.length);
     maxTime = Math.max(1.35, 3.4 - level * 0.18);
     timeLeft = maxTime;
-    highlightTimer = 0.9; // brief window where true target glows
+    highlightTimer = 0.9;
   }
 
   function startGame() {
@@ -182,7 +182,6 @@
       ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
 
       if (showHighlight && isTrue) {
-        // Only the true target glows during the short highlight window
         const grad = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.r * 1.7);
         grad.addColorStop(0, "hsla(160, 100%, 62%, 0.95)");
         grad.addColorStop(0.55, "hsla(160, 100%, 50%, 0.45)");
@@ -198,7 +197,6 @@
         ctx.lineWidth = 2.2 * scale;
         ctx.stroke();
       } else {
-        // All targets look identical after highlight — player must track by motion
         ctx.fillStyle = "hsla(210, 55%, 52%, 0.88)";
         ctx.fill();
         ctx.strokeStyle = "hsla(210, 60%, 70%, 0.35)";
@@ -249,7 +247,6 @@
     const y = (clientY - rect.top) * (canvas.height / rect.height);
 
     let hit = -1;
-    // Prefer the true target if overlapping (rare)
     for (let i = 0; i < targets.length; i++) {
       const t = targets[i];
       const dx = x - t.x;
@@ -295,33 +292,48 @@
   startBtn.addEventListener("click", startGame);
   retryBtn.addEventListener("click", startGame);
 
-  submitBtn.addEventListener("click", () => {
+  submitBtn.addEventListener("click", async () => {
     const name = playerNameInput.value;
-    if (window.Leaderboard) {
-      Leaderboard.submitScore("focus-lock", name, score);
-      renderGameLeaderboard();
-    }
-    submitBtn.textContent = "Submitted!";
     submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting…";
+
+    try {
+      if (window.Leaderboard) {
+        await Leaderboard.submitScore("focus-lock", name, score);
+        await renderGameLeaderboard();
+      }
+      submitBtn.textContent = "Submitted!";
+    } catch (err) {
+      console.error(err);
+      submitBtn.textContent = "Error – try again";
+    }
+
     setTimeout(() => {
       submitBtn.textContent = "Submit Score";
       submitBtn.disabled = false;
-    }, 1500);
+    }, 1800);
   });
 
-  function renderGameLeaderboard() {
+  async function renderGameLeaderboard() {
     if (!lbEl || !window.Leaderboard) return;
-    const top = Leaderboard.getTop10("focus-lock");
-    if (!top.length) {
-      lbEl.innerHTML = `<li class="empty">No scores yet</li>`;
-      return;
+    lbEl.innerHTML = `<li class="empty">Loading…</li>`;
+
+    try {
+      const top = await Leaderboard.getTop10("focus-lock");
+      if (!top.length) {
+        lbEl.innerHTML = `<li class="empty">No scores yet</li>`;
+        return;
+      }
+      lbEl.innerHTML = top.map(e => `
+        <li>
+          <span class="name">${escapeHtml(e.name)}</span>
+          <span class="score">${e.score.toLocaleString()}</span>
+        </li>
+      `).join("");
+    } catch (err) {
+      console.error(err);
+      lbEl.innerHTML = `<li class="empty">Failed to load</li>`;
     }
-    lbEl.innerHTML = top.map(e => `
-      <li>
-        <span class="name">${escapeHtml(e.name)}</span>
-        <span class="score">${e.score.toLocaleString()}</span>
-      </li>
-    `).join("");
   }
 
   function escapeHtml(str) {
