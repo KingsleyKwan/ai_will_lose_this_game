@@ -4,45 +4,69 @@ A collection of browser games deliberately designed so that **humans perform wel
 
 These games target known AI weaknesses:
 - Continuous spatial tracking & precise motor control
-- Real-time multi-object attention
+- Real-time multi-object attention + visual working memory
 - On-the-fly rule induction in novel environments
-- Intuitive physics and timing
-- High visual noise + sparse feedback
+- Intuitive physics and timing under noise
 
-Inspired by research such as WebGames, ARC-AGI-3, and cognitive benchmarks that still show large human–AI gaps.
+Inspired by research gaps shown in WebGames, ARC-AGI-3 and similar cognitive benchmarks.
 
-## Live Demo
+## Play Now
 
-Once GitHub Pages is enabled: `https://kingsleykwan.github.io/ai_will_lose_this_game/`
+1. Go to the repository **Settings → Pages**
+2. Set Source to **Deploy from a branch** → `main` / `/ (root)`
+3. After a minute the site will be live at:  
+   **https://kingsleykwan.github.io/ai_will_lose_this_game/**
 
-## Games
+Or just open `index.html` locally.
+
+## Current Games
 
 | Game | Status | Why AI struggles |
 |------|--------|------------------|
-| **Focus Lock** | ✅ Playable | Continuous multi-object tracking + precise clicking under time pressure and visual clutter |
+| **Focus Lock** | ✅ Playable | Multi-object tracking + short-term visual memory. Targets become identical after a brief glow — you must track the correct one by continuous motion. Latency + spatial precision hurt general agents. |
 | Signal Hunter | Coming soon | Partial observability + spatial memory |
 | Rule Forge | Coming soon | Novel rule induction (ARC-style) |
-| Physics Edge | Coming soon | Intuitive physics & continuous control |
+| Physics Edge | Coming soon | Embodied physics intuition |
 
-## How to Play
+## How Focus Lock works
 
-1. Open the landing page.
-2. Choose a game.
-3. Try to beat the global top 10 (currently local + planned remote leaderboard).
+1. Several identical-looking circles move around the field.
+2. One of them briefly **glows**.
+3. After the glow disappears you must **click the same circle** by tracking its motion.
+4. Speed, number of distractors and time pressure increase with consecutive successes.
+5. Wrong click or timeout ends the run.
+
+## Leaderboard
+
+Top 10 scores are shown on both the landing page and the game page.
+
+**Current implementation:** `localStorage` (works offline / pure static hosting).
+
+**Next step:** Swap the storage layer in `js/leaderboard.js` for a real backend (Supabase, Cloudflare D1/KV, or Firebase) so scores become truly global across players.
+
+The API surface is already clean:
+
+```js
+Leaderboard.submitScore(gameId, name, score)
+Leaderboard.getTop10(gameId)
+```
 
 ## Tech
 
 - Pure HTML / CSS / Vanilla JS (no build step)
-- Canvas for games
+- Canvas 2D
 - Ready for GitHub Pages
-- Leaderboard designed to be swapped from localStorage to a real backend (Supabase / Cloudflare / etc.)
+- Mobile-friendly (touch support)
 
-## Contributing / Next Steps
+## Roadmap
 
-- Add more games that exploit remaining AI weaknesses
-- Wire a real persistent leaderboard (Supabase recommended)
-- Optional: expose simple action API so people can test AI agents against the games
+- [x] Landing page + game selection
+- [x] First game (Focus Lock)
+- [x] Local top-10 leaderboard
+- [ ] Persistent remote leaderboard
+- [ ] More games (Signal Hunter, Rule Forge, Physics Edge…)
+- [ ] Optional simple action API so people can test AI agents against the games
 
 ---
 
-Made for fun and to highlight where human cognition still has the edge.
+Made to highlight where human cognition still has a clear edge.
