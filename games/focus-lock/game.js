@@ -58,7 +58,7 @@
     return min + Math.random() * (max - min);
   }
 
-  function createTarget(isTrue = false) {
+  function createTarget() {
     const r = rand(14, 22) * scale;
     return {
       x: rand(r + 10, W - r - 10),
@@ -66,7 +66,6 @@
       vx: rand(-1.8, 1.8) * (0.9 + level * 0.12) * scale,
       vy: rand(-1.8, 1.8) * (0.9 + level * 0.12) * scale,
       r,
-      hue: isTrue ? 160 + rand(-20, 20) : rand(0, 360),
       phase: Math.random() * Math.PI * 2,
       wobble: rand(0.4, 1.2)
     };
@@ -76,13 +75,12 @@
     const count = Math.min(5 + Math.floor(level * 1.3), 14);
     targets = [];
     for (let i = 0; i < count; i++) {
-      targets.push(createTarget(false));
+      targets.push(createTarget());
     }
     trueIndex = Math.floor(Math.random() * targets.length);
-    targets[trueIndex].hue = 155; // cyan-green for true target during highlight
     maxTime = Math.max(1.35, 3.4 - level * 0.18);
     timeLeft = maxTime;
-    highlightTimer = 0.85; // brief highlight window
+    highlightTimer = 0.9; // brief window where true target glows
   }
 
   function startGame() {
@@ -130,33 +128,28 @@
   }
 
   function update(dt) {
-    // Move targets
     for (const t of targets) {
       t.phase += dt * t.wobble;
-      t.x += t.vx + Math.sin(t.phase) * 0.4 * scale;
-      t.y += t.vy + Math.cos(t.phase * 0.9) * 0.4 * scale;
+      t.x += t.vx + Math.sin(t.phase) * 0.45 * scale;
+      t.y += t.vy + Math.cos(t.phase * 0.9) * 0.45 * scale;
 
-      // Bounce
       if (t.x < t.r || t.x > W - t.r) t.vx *= -1;
       if (t.y < t.r || t.y > H - t.r) t.vy *= -1;
       t.x = Math.max(t.r, Math.min(W - t.r, t.x));
       t.y = Math.max(t.r, Math.min(H - t.r, t.y));
     }
 
-    // Timer
     if (highlightTimer > 0) {
       highlightTimer -= dt;
     } else {
       timeLeft -= dt;
       if (timeLeft <= 0) {
-        // Timeout = miss
         combo = 0;
         endGame();
         return;
       }
     }
 
-    // Particles
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
       p.x += p.vx;
@@ -170,7 +163,6 @@
     ctx.fillStyle = "#0d1018";
     ctx.fillRect(0, 0, W, H);
 
-    // Subtle grid
     ctx.strokeStyle = "rgba(0, 240, 255, 0.04)";
     ctx.lineWidth = 1;
     const step = 40 * scale;
@@ -181,41 +173,40 @@
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
     }
 
-    // Targets
     const showHighlight = highlightTimer > 0;
+
     targets.forEach((t, i) => {
       const isTrue = i === trueIndex;
-      const alpha = showHighlight && isTrue ? 1 : 0.85;
 
       ctx.beginPath();
       ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
 
       if (showHighlight && isTrue) {
-        // Glowing true target
-        const grad = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.r * 1.6);
-        grad.addColorStop(0, `hsla(160, 100%, 60%, 0.9)`);
-        grad.addColorStop(0.6, `hsla(160, 100%, 50%, 0.5)`);
-        grad.addColorStop(1, `hsla(160, 100%, 40%, 0)`);
+        // Only the true target glows during the short highlight window
+        const grad = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.r * 1.7);
+        grad.addColorStop(0, "hsla(160, 100%, 62%, 0.95)");
+        grad.addColorStop(0.55, "hsla(160, 100%, 50%, 0.45)");
+        grad.addColorStop(1, "hsla(160, 100%, 40%, 0)");
         ctx.fillStyle = grad;
         ctx.fill();
 
         ctx.beginPath();
         ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(160, 100%, 55%, 0.95)`;
+        ctx.fillStyle = "hsla(160, 100%, 55%, 0.95)";
         ctx.fill();
-        ctx.strokeStyle = "#fff";
-        ctx.lineWidth = 2 * scale;
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2.2 * scale;
         ctx.stroke();
       } else {
-        ctx.fillStyle = `hsla(${t.hue}, 70%, 55%, ${alpha})`;
+        // All targets look identical after highlight — player must track by motion
+        ctx.fillStyle = "hsla(210, 55%, 52%, 0.88)";
         ctx.fill();
-        ctx.strokeStyle = `hsla(${t.hue}, 70%, 70%, 0.4)`;
+        ctx.strokeStyle = "hsla(210, 60%, 70%, 0.35)";
         ctx.lineWidth = 1.5 * scale;
         ctx.stroke();
       }
     });
 
-    // Particles
     for (const p of particles) {
       ctx.globalAlpha = Math.max(0, p.life);
       ctx.fillStyle = p.color;
@@ -225,7 +216,6 @@
       ctx.globalAlpha = 1;
     }
 
-    // Timer bar (only after highlight)
     if (!showHighlight && running) {
       const barH = 6 * scale;
       const pct = Math.max(0, timeLeft / maxTime);
@@ -235,12 +225,11 @@
       ctx.fillRect(0, H - barH, W * pct, barH);
     }
 
-    // Hint text during highlight
     if (showHighlight && running) {
-      ctx.fillStyle = "rgba(0, 240, 255, 0.85)";
-      ctx.font = `${13 * scale}px JetBrains Mono`;
+      ctx.fillStyle = "rgba(0, 240, 255, 0.9)";
+      ctx.font = `bold ${13 * scale}px JetBrains Mono, monospace`;
       ctx.textAlign = "center";
-      ctx.fillText("LOCK THE GLOWING TARGET", W / 2, 22 * scale);
+      ctx.fillText("MEMORIZE THE GLOWING ONE", W / 2, 22 * scale);
     }
   }
 
@@ -259,35 +248,32 @@
     const x = (clientX - rect.left) * (canvas.width / rect.width);
     const y = (clientY - rect.top) * (canvas.height / rect.height);
 
-    // During highlight window we still allow early lock
     let hit = -1;
+    // Prefer the true target if overlapping (rare)
     for (let i = 0; i < targets.length; i++) {
       const t = targets[i];
       const dx = x - t.x;
       const dy = y - t.y;
       if (dx * dx + dy * dy <= t.r * t.r) {
         hit = i;
-        break;
+        if (i === trueIndex) break;
       }
     }
 
-    if (hit === -1) return; // miss click does nothing (or could punish)
+    if (hit === -1) return;
 
     if (hit === trueIndex) {
-      // Success
       combo += 1;
       const base = 100 + level * 25;
       const timeBonus = Math.floor(timeLeft * 40);
       const comboBonus = Math.floor(combo * 15);
-      const gained = base + timeBonus + comboBonus;
-      score += gained;
+      score += base + timeBonus + comboBonus;
       addParticles(targets[hit].x, targets[hit].y, "#00ffa3", 14);
 
       if (combo % 3 === 0) level += 1;
       updateHud();
       spawnRound();
     } else {
-      // Wrong target
       combo = 0;
       addParticles(targets[hit].x, targets[hit].y, "#ff2a6d", 8);
       endGame();
@@ -314,7 +300,6 @@
     if (window.Leaderboard) {
       Leaderboard.submitScore("focus-lock", name, score);
       renderGameLeaderboard();
-      // Also refresh landing page leaderboard if user goes back
     }
     submitBtn.textContent = "Submitted!";
     submitBtn.disabled = true;
