@@ -31,8 +31,8 @@
         <h2 id="overlay-title">Focus Lock</h2>
         <p id="overlay-desc">
           Multiple targets move across the field.<br>
-          One of them is the <strong>true target</strong> (briefly highlighted).<br>
-          Click it before the timer runs out.<br><br>
+          One of them briefly <strong>glows</strong>.<br>
+          After the glow disappears, track that same circle by motion and click it before time runs out.<br><br>
           Speed and clutter increase with every successful lock.
         </p>
         <button id="start-btn" class="play-btn large">Start Game</button>
@@ -49,10 +49,13 @@
   <section class="side-leaderboard">
     <h3>Top 10</h3>
     <ol id="game-leaderboard" class="leaderboard-list">
-      <li class="empty">No scores yet</li>
+      <li class="empty">Loading…</li>
     </ol>
   </section>
 
+  <!-- Supabase JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../js/config.js"></script>
   <script src="../../js/leaderboard.js"></script>
   <script src="game.js"></script>
 </body>
