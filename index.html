@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Will Lose This Game</title>
-  <link rel="stylesheet" href="styles.css?v=1.1.0" />
+  <link rel="stylesheet" href="styles.css?v=1.2.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
       <span class="logo-lose">LOSE</span>
     </div>
     <p class="tagline">Games designed for human advantage</p>
-    <p class="version">v1.1.0</p>
+    <p class="version">v1.2.0</p>
   </header>
 
   <main>
@@ -44,7 +44,11 @@
     </section>
 
     <section class="leaderboard-section">
-      <h2>Global Top 10 — Focus Lock</h2>
+      <h2 id="lb-heading">Global Top 10 — Signal Hunter</h2>
+      <div class="lb-tabs" role="tablist">
+        <button class="lb-tab" type="button" data-lb="focus-lock">Focus Lock</button>
+        <button class="lb-tab active" type="button" data-lb="signal-hunter">Signal Hunter</button>
+      </div>
       <div class="leaderboard-card">
         <ol id="global-leaderboard" class="leaderboard-list">
           <li class="empty">Loading…</li>
@@ -55,14 +59,13 @@
   </main>
 
   <footer>
-    <p>Open source · <a href="https://github.com/KingsleyKwan/ai_will_lose_this_game" target="_blank">GitHub</a> · <span class="version">v1.1.0</span></p>
+    <p>Open source · <a href="https://github.com/KingsleyKwan/ai_will_lose_this_game" target="_blank">GitHub</a> · <span class="version">v1.2.0</span></p>
   </footer>
 
-  <!-- Supabase JS (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js?v=1.1.0"></script>
-  <script src="js/games-data.js?v=1.1.0"></script>
-  <script src="js/leaderboard.js?v=1.1.0"></script>
-  <script src="js/main.js?v=1.1.0"></script>
+  <script src="js/config.js?v=1.2.0"></script>
+  <script src="js/games-data.js?v=1.2.0"></script>
+  <script src="js/leaderboard.js?v=1.2.0"></script>
+  <script src="js/main.js?v=1.2.0"></script>
 </body>
 </html>

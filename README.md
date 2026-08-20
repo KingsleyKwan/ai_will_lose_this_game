@@ -5,6 +5,7 @@ A collection of browser games deliberately designed so that **humans perform wel
 These games target known AI weaknesses:
 - Continuous spatial tracking & precise motor control
 - Real-time multi-object attention + visual working memory
+- Partial observability and motion prediction
 - On-the-fly rule induction in novel environments
 - Intuitive physics and timing under noise
 
@@ -24,7 +25,7 @@ Or just open `index.html` locally.
 | Game | Status | Why AI struggles |
 |------|--------|------------------|
 | **Focus Lock** | ✅ Playable | Multi-object tracking + short-term visual memory. Targets become identical after a brief glow — you must track the correct one by continuous motion. |
-| Signal Hunter | Coming soon | Partial observability + spatial memory |
+| **Signal Hunter** | ✅ Playable | Partial observability + motion prediction. A radar pulse reveals drifting beacons, then they vanish. Click where they *will be*. Screenshot agents see an empty field. |
 | Rule Forge | Coming soon | Novel rule induction (ARC-style) |
 | Physics Edge | Coming soon | Embodied physics intuition |
 
@@ -68,6 +69,14 @@ The landing page note will change from “stored in this browser” to “Global
 4. Speed, number of distractors and time pressure increase with consecutive successes.
 5. Wrong click or timeout ends the run.
 
+## How Signal Hunter works
+
+1. Hidden beacons spawn and start drifting.
+2. A brief **radar pulse** lights them up so you can lock onto paths.
+3. The pulse dies. The beacons stay invisible but keep moving (and bounce off walls).
+4. Click each remembered trajectory — aim ahead, not at the last glow.
+5. Three misses or a timeout ends the run. Each wave adds more beacons and speed.
+
 ## Tech
 
 - Pure HTML / CSS / Vanilla JS (no build step)
@@ -80,9 +89,10 @@ The landing page note will change from “stored in this browser” to “Global
 
 - [x] Landing page + game selection
 - [x] First game (Focus Lock)
+- [x] Second game (Signal Hunter)
 - [x] Local top-10 leaderboard
 - [x] Persistent remote leaderboard (Supabase)
-- [ ] More games (Signal Hunter, Rule Forge, Physics Edge…)
+- [ ] More games (Rule Forge, Physics Edge…)
 - [ ] Optional simple action API so people can test AI agents against the games
 
 ---

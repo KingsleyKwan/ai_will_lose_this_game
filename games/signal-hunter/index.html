@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Signal Hunter — AI Will Lose This Game</title>
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="game.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="game-page">
+  <div class="bg-grid"></div>
+
+  <header class="game-header">
+    <a href="../../" class="back-link">← All Games</a>
+    <h1 class="game-title">Signal Hunter</h1>
+    <div class="hud">
+      <div class="hud-item">Score <span id="score">0</span></div>
+      <div class="hud-item">Wave <span id="wave">1</span></div>
+      <div class="hud-item">Lives <span id="lives">3</span></div>
+    </div>
+  </header>
+
+  <div class="game-container">
+    <canvas id="game-canvas"></canvas>
+
+    <div id="overlay" class="overlay">
+      <div class="overlay-content">
+        <h2 id="overlay-title">Signal Hunter</h2>
+        <p id="overlay-desc">
+          A short <strong>radar pulse</strong> reveals hidden beacons.<br>
+          They keep drifting after the pulse dies.<br>
+          Click where each beacon <em>will be</em> — not where it was.<br><br>
+          Misses cost a life. Time out ends the run.<br>
+          Humans track motion; screenshot agents see an empty field.
+        </p>
+        <button id="start-btn" class="play-btn large">Start Hunt</button>
+        <div id="final-score-block" class="final-score-block hidden">
+          <div class="final-score">Score: <span id="final-score">0</span></div>
+          <input type="text" id="player-name" placeholder="Your name (optional)" maxlength="20" />
+          <button id="submit-score-btn" class="play-btn">Submit Score</button>
+          <button id="retry-btn" class="play-btn secondary">Hunt Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="side-leaderboard">
+    <h3>Top 10 — Signal Hunter</h3>
+    <ol id="game-leaderboard" class="leaderboard-list">
+      <li class="empty">Loading…</li>
+    </ol>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/leaderboard.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

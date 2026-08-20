@@ -10,10 +10,10 @@ const GAMES = [
   {
     id: "signal-hunter",
     title: "Signal Hunter",
-    status: "coming",
-    path: null,
-    description: "Explore a partially observable map, build spatial memory, and retrieve signals before they fade.",
-    why: "Partial observability + episodic spatial memory — still a weak point for many agents."
+    status: "playable",
+    path: "games/signal-hunter/",
+    description: "A radar pulse reveals drifting beacons, then they vanish. Click where they will be — not where they were.",
+    why: "Partial observability + motion prediction. Screenshot agents see an empty field; humans keep an internal model of hidden trajectories."
   },
   {
     id: "rule-forge",
