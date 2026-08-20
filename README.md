@@ -1,5 +1,7 @@
 # AI Will Lose This Game
 
+by **sley**
+
 A collection of browser games deliberately designed so that **humans perform well** while current general-purpose AI agents (LLMs / VLMs) struggle.
 
 These games target known AI weaknesses:
@@ -10,6 +12,8 @@ These games target known AI weaknesses:
 - Intuitive physics and timing under noise
 
 Inspired by research gaps shown in WebGames, ARC-AGI-3 and similar cognitive benchmarks.
+
+**Live site:** https://kingsleykwan.github.io/ai_will_lose_this_game/
 
 ## Play Now
 
@@ -28,6 +32,13 @@ Or just open `index.html` locally.
 | **Signal Hunter** | ✅ Playable | Partial observability + motion prediction. A radar pulse reveals drifting beacons, then they vanish. Click where they *will be*. Screenshot agents see an empty field. |
 | Rule Forge | Coming soon | Novel rule induction (ARC-style) |
 | Physics Edge | Coming soon | Embodied physics intuition |
+
+## Social preview
+
+Same setup as the other sley games:
+
+- Pages / link cards: [`assets/social-preview.jpg`](./assets/social-preview.jpg)
+- GitHub repo card: [`.github/social-preview.jpg`](./.github/social-preview.jpg) — if GitHub does not pick it up automatically, upload that file in **Settings → General → Social preview**
 
 ## Global Leaderboard (Supabase)
 
@@ -92,6 +103,7 @@ The landing page note will change from “stored in this browser” to “Global
 - [x] Second game (Signal Hunter)
 - [x] Local top-10 leaderboard
 - [x] Persistent remote leaderboard (Supabase)
+- [x] Social preview card
 - [ ] More games (Rule Forge, Physics Edge…)
 - [ ] Optional simple action API so people can test AI agents against the games
 
